@@ -1,0 +1,18 @@
+{
+  "branch": "main",
+  "depends_recipe": "",
+  "description_control": "Automatically add Timers based on simple rules",
+  "description_recipe": "Automatically add Timers based on simple rules",
+  "history_source_dir": "autotimer",
+  "internal_package_name": "enigma2-plugin-extensions-autotimer",
+  "module_dir_name": "AutoTimer",
+  "output_subdir": "autotimer",
+  "package_name": "enigma2-plugin-extensions-autotimer",
+  "plugin_src_rel": "autotimer",
+  "python_package": "AutoTimer",
+  "rdepends_recipe": "",
+  "replaces": "",
+  "repo_name": "autotimer",
+  "rrecommends": "",
+  "rreplaces": ""
+}
