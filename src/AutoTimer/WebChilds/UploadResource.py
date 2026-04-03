@@ -27,8 +27,8 @@ class UploadResource(resource.Resource):
 			os_close(fd)
 		if cnt <= 0:
 			try:
-				os_remove(FILENAME)
-			except OSError as oe:
+				os_remove(self.FILENAME)
+			except OSError:
 				pass
 			result = """<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n
 				<e2simplexmlresult>\n

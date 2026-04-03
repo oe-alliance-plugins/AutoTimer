@@ -67,15 +67,15 @@ weekdays = [
 ]
 
 try:
-	from Plugins.SystemPlugins.vps import Vps
-except ImportError as ie:
+	from Plugins.SystemPlugins.vps import Vps  # noqa: F401
+except ImportError:
 	hasVps = False
 else:
 	hasVps = True
 
 try:
-	from Plugins.Extensions.SeriesPlugin.plugin import Plugins
-except ImportError as ie:
+	from Plugins.Extensions.SeriesPlugin.plugin import Plugins  # noqa: F401
+except ImportError:
 	hasSeriesPlugin = False
 else:
 	hasSeriesPlugin = True
@@ -1566,7 +1566,7 @@ class AutoTimerServiceEditor(ConfigListScreen, Screen):
 
 
 def addAutotimerFromSearchString(session, match):
-	from .AutoTimerComponent import preferredAutoTimerComponent
+	from .AutoTimerComponent import preferredAutoTimerComponent  # noqa: F401
 	from .AutoTimerImporter import AutoTimerImporter
 	from .plugin import autotimer
 
@@ -1595,7 +1595,7 @@ def addAutotimerFromSearchString(session, match):
 
 
 def addAutotimerFromEvent(session, evt=None, service=None):
-	from .AutoTimerComponent import preferredAutoTimerComponent
+	from .AutoTimerComponent import preferredAutoTimerComponent  # noqa: F401
 	from .AutoTimerImporter import AutoTimerImporter
 	from .plugin import autotimer
 
@@ -1648,7 +1648,7 @@ def addAutotimerFromEvent(session, evt=None, service=None):
 
 
 def addAutotimerFromTimer(session, timer):
-	from .AutoTimerComponent import preferredAutoTimerComponent
+	from .AutoTimerComponent import preferredAutoTimerComponent  # noqa: F401
 	from .AutoTimerImporter import AutoTimerImporter
 	from .plugin import autotimer
 
@@ -1685,7 +1685,7 @@ def addAutotimerFromTimer(session, timer):
 
 
 def addAutotimerFromService(session, service=None):
-	from .AutoTimerComponent import preferredAutoTimerComponent
+	from .AutoTimerComponent import preferredAutoTimerComponent  # noqa: F401
 	from .AutoTimerImporter import AutoTimerImporter
 	from .plugin import autotimer
 

@@ -230,7 +230,6 @@ class AutoTimerOverview(Screen, HelpableScreen):
 				self.refresh()
 				if (answer[1] == "yes_delete"):
 					import NavigationInstance
-					from RecordTimer import RecordTimerEntry
 					recordHandler = NavigationInstance.instance.RecordTimer
 					for timer in recordHandler.timer_list[:]:  # '[:]' for working on a copy, avoid processing a changing list
 						# print '[AutoTimerOverview] checking whether timer should be deleted: ', timer

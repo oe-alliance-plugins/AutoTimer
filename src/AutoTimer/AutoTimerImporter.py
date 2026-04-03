@@ -63,12 +63,12 @@ class AutoTimerImportSelector(Screen):
 		self.setTitle(_("Select a timer to import"))
 
 	def fillTimerList(self):
-		l = self.list
-		del l[:]
+		items = self.list
+		del items[:]
 
-		l.extend([(timer, False) for timer in self.session.nav.RecordTimer.timer_list])
-		l.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers])
-		l.sort(key=lambda x: x[0].begin)
+		items.extend([(timer, False) for timer in self.session.nav.RecordTimer.timer_list])
+		items.extend([(timer, True) for timer in self.session.nav.RecordTimer.processed_timers])
+		items.sort(key=lambda x: x[0].begin)
 
 	def importerClosed(self, ret):
 		ret = ret and ret[0]

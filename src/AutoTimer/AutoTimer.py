@@ -42,10 +42,10 @@ from Plugins.SystemPlugins.Toolkit.SimpleThread import SimpleThread
 
 try:
 	from Plugins.Extensions.SeriesPlugin.plugin import renameTimer
-except ImportError as ie:
+except ImportError:
 	renameTimer = None
 
-from . import config, xrange, itervalues
+from . import config, itervalues
 
 from six.moves import range
 

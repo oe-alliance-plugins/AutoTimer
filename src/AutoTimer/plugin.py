@@ -103,7 +103,7 @@ def sessionstart(reason, **kwargs):
 				AutoTimerRemoveAutoTimerResource, AutoTimerChangeSettingsResource, \
 				AutoTimerSettingsResource, AutoTimerSimulateResource, AutoTimerTestResource, \
 				AutoTimerUploadXMLConfigurationAutoTimerResource, AutoTimerAddXMLAutoTimerResource, API_VERSION
-		except ImportError as ie:
+		except ImportError:
 			pass
 		else:
 			if hasattr(static.File, 'render_GET'):

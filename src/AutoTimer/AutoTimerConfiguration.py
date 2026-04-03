@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 # for localized messages
-from . import _, removeBad
+from . import removeBad
 
 from .AutoTimerComponent import preferredAutoTimerComponent, getDefaultEncoding
 from RecordTimer import AFTEREVENT
@@ -35,9 +35,9 @@ def getValue(definitions, default):
 	if isinstance(definitions, list):
 		Len = len(definitions)
 		if Len > 0:
-			childNodes = definitions[Len - 1].text
+			childNodes = definitions[Len - 1].text  # noqa: F841
 		else:
-			childNodes = ""
+			childNodes = ""  # noqa: F841
 	else:
 		ret = definitions.text
 
@@ -179,11 +179,11 @@ def parseEntry(element, baseTimer, defaults=False):
 	baseTimer.searchForDuplicateDescription = int(element.get("searchForDuplicateDescription", 2))
 
 	# Read out allowed services
-	l = element.findall("serviceref")
-	if l:
+	items = element.findall("serviceref")
+	if items:
 		servicelist = []
 
-		for service in l:
+		for service in items:
 			value = service.text
 			if value:
 				myref = eServiceReference(str(value))
@@ -199,18 +199,18 @@ def parseEntry(element, baseTimer, defaults=False):
 		baseTimer.services = servicelist
 
 	# Read out allowed bouquets
-	l = element.findall("bouquet")
-	if l:
+	items = element.findall("bouquet")
+	if items:
 		bouquets = []
-		for bouquet in l:
+		for bouquet in items:
 			value = bouquet.text
 			if value:
 				bouquets.append(value)
 		baseTimer.bouquets = bouquets
 
 	# Read out afterevent
-	l = element.findall("afterevent")
-	if l:
+	items = element.findall("afterevent")
+	if items:
 		idx = {
 			"none": AFTEREVENT.NONE,
 			"deepstandby": AFTEREVENT.DEEPSTANDBY,
@@ -219,7 +219,7 @@ def parseEntry(element, baseTimer, defaults=False):
 			"auto": AFTEREVENT.AUTO
 		}
 		afterevents = []
-		for afterevent in l:
+		for afterevent in items:
 			value = afterevent.text
 
 			if value in idx:
@@ -239,11 +239,11 @@ def parseEntry(element, baseTimer, defaults=False):
 		baseTimer.afterevent = afterevents
 
 	# Read out exclude
-	l = element.findall("exclude")
+	items = element.findall("exclude")
 	idx = {"title": 0, "shortdescription": 1, "description": 2, "dayofweek": 3}
-	if l:
+	if items:
 		excludes = ([], [], [], [])
-		for exclude in l:
+		for exclude in items:
 			where = exclude.get("where")
 			value = exclude.text
 			if not (value and where):
@@ -254,10 +254,10 @@ def parseEntry(element, baseTimer, defaults=False):
 		baseTimer.exclude = excludes
 
 	# Read out includes (use same idx)
-	l = element.findall("include")
-	if l:
+	items = element.findall("include")
+	if items:
 		includes = ([], [], [], [])
-		for include in l:
+		for include in items:
 			where = include.get("where")
 			value = include.text
 			if not (value and where):
@@ -268,10 +268,10 @@ def parseEntry(element, baseTimer, defaults=False):
 		baseTimer.include = includes
 
 	# Read out recording tags
-	l = element.findall("tag")
-	if l:
+	items = element.findall("tag")
+	if items:
 		tags = []
-		for tag in l:
+		for tag in items:
 			value = tag.text
 			if not value:
 				continue

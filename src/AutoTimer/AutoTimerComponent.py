@@ -12,11 +12,8 @@ from enigma import eServiceReference, eServiceCenter
 # To get preferred component
 from Components.config import config
 
-# Default encoding
-from Components.Language import language
 
-
-class AutoTimerComponent(object):
+class AutoTimerComponent:
 	"""AutoTimer Component which also handles validity checks"""
 
 	# Initiate
@@ -254,64 +251,64 @@ class AutoTimerComponent(object):
 
 ### Makes saving Config easier
 
-	getAvoidDuplicateDescription = lambda self: self.avoidDuplicateDescription
+	getAvoidDuplicateDescription = lambda self: self.avoidDuplicateDescription  # noqa: E731
 
-	getBouquets = lambda self: self._bouquets
+	getBouquets = lambda self: self._bouquets  # noqa: E731
 
-	getCompleteAfterEvent = lambda self: self._afterevent
+	getCompleteAfterEvent = lambda self: self._afterevent  # noqa: E731
 
-	getCounter = lambda self: self.matchCount
-	getCounterFormatString = lambda self: self.matchFormatString
-	getCounterLeft = lambda self: self.matchLeft
-	getCounterLimit = lambda self: self.matchLimit
+	getCounter = lambda self: self.matchCount  # noqa: E731
+	getCounterFormatString = lambda self: self.matchFormatString  # noqa: E731
+	getCounterLeft = lambda self: self.matchLeft  # noqa: E731
+	getCounterLimit = lambda self: self.matchLimit  # noqa: E731
 
 	# XXX: as this function was not added by me (ritzMo) i'll leave it like this but i'm not really sure if this is right ;-)
-	getDestination = lambda self: self.destination is not None
+	getDestination = lambda self: self.destination is not None  # noqa: E731
 
-	getDuration = lambda self: self.maxduration // 60
+	getDuration = lambda self: self.maxduration // 60  # noqa: E731
 
-	getEnabled = lambda self: self.enabled and "yes" or "no"
+	getEnabled = lambda self: self.enabled and "yes" or "no"  # noqa: E731
 
-	getExclude = lambda self: self._exclude
-	getExcludedDays = lambda self: self.exclude[3]
-	getExcludedDescription = lambda self: [x.pattern for x in self.exclude[2]]
-	getExcludedShort = lambda self: [x.pattern for x in self.exclude[1]]
-	getExcludedTitle = lambda self: [x.pattern for x in self.exclude[0]]
+	getExclude = lambda self: self._exclude  # noqa: E731
+	getExcludedDays = lambda self: self.exclude[3]  # noqa: E731
+	getExcludedDescription = lambda self: [x.pattern for x in self.exclude[2]]  # noqa: E731
+	getExcludedShort = lambda self: [x.pattern for x in self.exclude[1]]  # noqa: E731
+	getExcludedTitle = lambda self: [x.pattern for x in self.exclude[0]]  # noqa: E731
 
-	getId = lambda self: self.id
+	getId = lambda self: self.id  # noqa: E731
 
-	getInclude = lambda self: self._include
-	getIncludedTitle = lambda self: [x.pattern for x in self.include[0]]
-	getIncludedShort = lambda self: [x.pattern for x in self.include[1]]
-	getIncludedDescription = lambda self: [x.pattern for x in self.include[2]]
-	getIncludedDays = lambda self: self.include[3]
+	getInclude = lambda self: self._include  # noqa: E731
+	getIncludedTitle = lambda self: [x.pattern for x in self.include[0]]  # noqa: E731
+	getIncludedShort = lambda self: [x.pattern for x in self.include[1]]  # noqa: E731
+	getIncludedDescription = lambda self: [x.pattern for x in self.include[2]]  # noqa: E731
+	getIncludedDays = lambda self: self.include[3]  # noqa: E731
 
-	getJustplay = lambda self: self.justplay and "1" or "0"
-	getAlwaysZap = lambda self: self.always_zap and "1" or "0"
+	getJustplay = lambda self: self.justplay and "1" or "0"  # noqa: E731
+	getAlwaysZap = lambda self: self.always_zap and "1" or "0"  # noqa: E731
 
-	getLastBegin = lambda self: self.lastBegin
+	getLastBegin = lambda self: self.lastBegin  # noqa: E731
 
-	getMatch = lambda self: self.match
-	getName = lambda self: self.name
+	getMatch = lambda self: self.match  # noqa: E731
+	getName = lambda self: self.name  # noqa: E731
 
-	getOffsetBegin = lambda self: self.offset[0] // 60
-	getOffsetEnd = lambda self: self.offset[1] // 60
+	getOffsetBegin = lambda self: self.offset[0] // 60  # noqa: E731
+	getOffsetEnd = lambda self: self.offset[1] // 60  # noqa: E731
 
-	getOverrideAlternatives = lambda self: self.overrideAlternatives and "1" or "0"
+	getOverrideAlternatives = lambda self: self.overrideAlternatives and "1" or "0"  # noqa: E731
 
-	getServices = lambda self: self._services
+	getServices = lambda self: self._services  # noqa: E731
 
-	getTags = lambda self: self.tags
+	getTags = lambda self: self.tags  # noqa: E731
 
-	getTimespan = lambda self: self._timespan
-	getTimespanBegin = lambda self: '%02d:%02d' % (self.timespan[0][0], self.timespan[0][1])
-	getTimespanEnd = lambda self: '%02d:%02d' % (self.timespan[1][0], self.timespan[1][1])
+	getTimespan = lambda self: self._timespan  # noqa: E731
+	getTimespanBegin = lambda self: '%02d:%02d' % (self.timespan[0][0], self.timespan[0][1])  # noqa: E731
+	getTimespanEnd = lambda self: '%02d:%02d' % (self.timespan[1][0], self.timespan[1][1])  # noqa: E731
 
-	getTimeframe = lambda self: self.timeframe
-	getTimeframeBegin = lambda self: int(self.timeframe[0])
-	getTimeframeEnd = lambda self: int(self.timeframe[1])
+	getTimeframe = lambda self: self.timeframe  # noqa: E731
+	getTimeframeBegin = lambda self: int(self.timeframe[0])  # noqa: E731
+	getTimeframeEnd = lambda self: int(self.timeframe[1])  # noqa: E731
 
-	isOffsetEqual = lambda self: self.offset[0] == self.offset[1]
+	isOffsetEqual = lambda self: self.offset[0] == self.offset[1]  # noqa: E731
 
 ### Actual functionality
 
@@ -725,4 +722,4 @@ def getDefaultEncoding():
 
 
 # very basic factory ;-)
-preferredAutoTimerComponent = lambda *args, **kwargs: AutoTimerFastscanComponent(*args, **kwargs) if config.plugins.autotimer.fastscan.value else AutoTimerComponent(*args, **kwargs)
+preferredAutoTimerComponent = lambda *args, **kwargs: AutoTimerFastscanComponent(*args, **kwargs) if config.plugins.autotimer.fastscan.value else AutoTimerComponent(*args, **kwargs)  # noqa: E731

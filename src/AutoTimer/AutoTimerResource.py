@@ -1,17 +1,14 @@
 from __future__ import absolute_import
 # -*- coding: UTF-8 -*-
-from .AutoTimer import AutoTimer
 from .AutoTimerConfiguration import CURRENT_CONFIG_VERSION
 from RecordTimer import AFTEREVENT
-from twisted.internet import reactor
 from twisted.web import http, resource, server
-import threading
 import six
 from six.moves.urllib.parse import unquote
 from ServiceReference import ServiceReference
 from Tools.XMLTools import stringToXML
 from enigma import eServiceReference
-from . import _, config, iteritems, plugin
+from . import _, config, plugin
 from .plugin import autotimer, AUTOTIMER_VERSION
 
 from .AutoTimerSettings import getAutoTimerSettingsDefinitions
@@ -627,15 +624,15 @@ class AutoTimerSettingsResource(resource.Resource):
 		req.setHeader('charset', 'UTF-8')
 
 		try:
-			from Plugins.SystemPlugins.vps import Vps
-		except ImportError as ie:
+			from Plugins.SystemPlugins.vps import Vps  # noqa: F401
+		except ImportError:
 			hasVps = False
 		else:
 			hasVps = True
 
 		try:
-			from Plugins.Extensions.SeriesPlugin.plugin import Plugins
-		except ImportError as ie:
+			from Plugins.Extensions.SeriesPlugin.plugin import Plugins  # noqa: F401
+		except ImportError:
 			hasSeriesPlugin = False
 		else:
 			hasSeriesPlugin = True

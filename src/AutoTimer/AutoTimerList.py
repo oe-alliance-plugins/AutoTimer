@@ -106,7 +106,7 @@ class AutoTimerList(MenuList):
 		iconMargin = self.iconMargin
 		statusIconHeight = self.statusIconHeight
 		statusIconWidth = self.statusIconWidth
-		typeIconHeight = self.typeIconHeight
+		# typeIconHeight = self.typeIconHeight
 		typeIconWidth = self.typeIconWidth
 		rowHeight = self.rowHeight
 		rowSplit1 = self.rowSplit1

@@ -50,7 +50,7 @@ class AutoTimerEditor(Source):
 				if not path.exists(arg):
 					return (False, "Error while preparing backup file, %s does not exists." % arg)
 				tarFiles += "%s " % arg
-			lines = popen("tar cvf %s %s" % (backupFilename, tarFiles)).readlines()
+			popen("tar cvf %s %s" % (backupFilename, tarFiles)).readlines()
 			remove(checkfile)
 			return (True, tarFilename)
 		else:
