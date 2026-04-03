@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 # for localized messages
 from . import _, removeBad
-import six
 
 # GUI (Screens)
 from Screens.Screen import Screen
@@ -78,8 +77,6 @@ class AutoTimerPreview(Screen):
 		self.timers = []
 		for x in timers:
 			serviceref = removeBad(ServiceReference(x[3]).getServiceName())
-			if six.PY2:
-				serviceref = serviceref.encode('utf-8', 'ignore')
 			self.timers.append(
 				(x[0], x[1], x[4],
 				serviceref,

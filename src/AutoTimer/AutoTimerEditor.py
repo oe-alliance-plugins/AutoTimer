@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import absolute_import
 # for localized messages
-from . import _
+from . import _, ensure_str
 
 # GUI (Screens)
 from Screens.Screen import Screen
@@ -51,8 +51,6 @@ try:
 except ImportError:
 	TagEditor = None
 	from Screens.MovieSelection import getPreferredTagEditor
-
-import six
 
 weekdays = [
 	("0", _("Monday")),
@@ -1134,7 +1132,7 @@ class AutoTimerEditorSilent(AutoTimerEditor):
 def CheckREList(re_list):
 	try:
 		for val in re_list:
-			dnc = re_compile(val)
+			re_compile(val)
 	except Exception as ex:
 		errm = (_("The filter must be a valid regular expression.\n") +
 			_("%s is not valid.") % val +
@@ -1272,9 +1270,9 @@ class AutoTimerFilterEditor(ConfigListScreen, Screen):
 			if item[1].value == "" or idx < 2:
 				continue
 			elif idx < self.lenExcludes:
-				self.excludes[self.idx].append(six.ensure_str(item[1].value))
+				self.excludes[self.idx].append(ensure_str(item[1].value))
 			else:
-				self.includes[self.idx].append(six.ensure_str(item[1].value))
+				self.includes[self.idx].append(ensure_str(item[1].value))
 
 	def refresh(self, *args, **kwargs):
 		self.saveCurrent()

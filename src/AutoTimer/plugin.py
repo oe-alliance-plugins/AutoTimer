@@ -215,7 +215,7 @@ def housekeepingExtensionsmenu(el):
 	else:
 		try:
 			plugins.removePlugin(extDescriptor)
-		except ValueError as ve:
+		except ValueError:
 			print("[AutoTimer] housekeepingExtensionsmenu got confused, tried to remove non-existant plugin entry... ignoring.")
 
 
@@ -241,7 +241,7 @@ pluginlist = PluginDescriptor(name="AutoTimer", description=_("Edit Timers and s
 
 
 def Plugins(**kwargs):
-	l = [
+	items = [
 		PluginDescriptor(where=PluginDescriptor.WHERE_AUTOSTART, fnc=autostart, needsRestart=False),
 		PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=sessionstart, needsRestart=False),
 		# TRANSLATORS: AutoTimer title in MovieList (automatically opens importer, I consider this no further interaction)
@@ -251,10 +251,10 @@ def Plugins(**kwargs):
 		PluginDescriptor(name=_("Auto Timers"), description=_("Edit Timers and scan for new Events"), where=PluginDescriptor.WHERE_MENU, fnc=timermenu),
 	]
 	if config.plugins.autotimer.show_in_extensionsmenu.value:
-		l.append(extDescriptor)
+		items.append(extDescriptor)
 	if config.plugins.autotimer.show_in_plugins.value:
-		l.append(pluginlist)
-	return l
+		items.append(pluginlist)
+	return items
 
 
 def timermenu(menuid):

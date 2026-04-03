@@ -8,7 +8,6 @@ try:
 except ImportError:
 	from boxbranding import getImageDistro
 	IMAGEDISTRO = getImageDistro()
-import six
 
 # Config
 from Components.config import config, ConfigSubsection, ConfigEnableDisable, \
@@ -16,6 +15,18 @@ from Components.config import config, ConfigSubsection, ConfigEnableDisable, \
 
 PluginLanguageDomain = "AutoTimer"
 PluginLanguagePath = "Extensions/AutoTimer/locale"
+
+
+def ensure_str(s):
+	if isinstance(s, bytes):
+		return s.decode("utf-8")
+	return s
+
+
+def ensure_binary(s):
+	if isinstance(s, str):
+		return s.encode("utf-8")
+	return s
 
 
 def removeBad(val):
@@ -95,13 +106,7 @@ config.plugins.autotimer.show_help = ConfigYesNo(default=True)
 config.plugins.autotimer.skip_during_records = ConfigYesNo(default=False)
 config.plugins.autotimer.skip_during_epgrefresh = ConfigYesNo(default=False)
 
-try:
-	iteritems = lambda d: six.iteritems(d)
-	itervalues = lambda d: six.itervalues(d)
-except NameError:
-	iteritems = lambda d: d.items()
-	itervalues = lambda d: d.values()
 
-__all__ = ['_', 'config', 'iteritems', 'itervalues']
+__all__ = ['_', 'config']
 
 __version__ = "1.0"

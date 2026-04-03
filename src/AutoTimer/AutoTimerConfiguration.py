@@ -1,9 +1,8 @@
 # -*- coding: UTF-8 -*-
 from __future__ import absolute_import
-from __future__ import print_function
 
 # for localized messages
-from . import removeBad
+from . import removeBad, ensure_str
 
 from .AutoTimerComponent import preferredAutoTimerComponent, getDefaultEncoding
 from RecordTimer import AFTEREVENT
@@ -11,7 +10,6 @@ from Tools.XMLTools import stringToXML
 from ServiceReference import ServiceReference
 
 from enigma import eServiceReference
-import six
 
 """
 Configuration Version.
@@ -77,7 +75,7 @@ def parseConfig(configuration, list, version=None, uniqueTimerId=0, defaultTimer
 def parseEntry(element, baseTimer, defaults=False):
 	if not defaults:
 		# Read out match
-		baseTimer.match = six.ensure_str(element.get("match", ""))
+		baseTimer.match = ensure_str(element.get("match", ""))
 		if not baseTimer.match:
 			print('[AutoTimer] Erroneous config is missing attribute "match", skipping entry')
 			return False
@@ -88,7 +86,7 @@ def parseEntry(element, baseTimer, defaults=False):
 			baseTimer.id = id
 
 		# Read out name
-		baseTimer.name = six.ensure_str(element.get("name", ""))
+		baseTimer.name = ensure_str(element.get("name", ""))
 		if not baseTimer.name:
 			print('[AutoTimer] Timer is missing attribute "name", defaulting to match')
 			baseTimer.name = baseTimer.match
@@ -149,7 +147,7 @@ def parseEntry(element, baseTimer, defaults=False):
 
 	# Read out recording path
 	default = baseTimer.destination or ""
-	baseTimer.destination = six.ensure_str(element.get("location", default)) or None
+	baseTimer.destination = ensure_str(element.get("location", default)) or None
 
 	# Read out offset
 	offset = element.get("offset")
@@ -250,7 +248,7 @@ def parseEntry(element, baseTimer, defaults=False):
 				continue
 
 			if where in idx:
-				excludes[idx[where]].append(six.ensure_str(value))
+				excludes[idx[where]].append(ensure_str(value))
 		baseTimer.exclude = excludes
 
 	# Read out includes (use same idx)
@@ -264,7 +262,7 @@ def parseEntry(element, baseTimer, defaults=False):
 				continue
 
 			if where in idx:
-				includes[idx[where]].append(six.ensure_str(value))
+				includes[idx[where]].append(ensure_str(value))
 		baseTimer.include = includes
 
 	# Read out recording tags
@@ -276,7 +274,7 @@ def parseEntry(element, baseTimer, defaults=False):
 			if not value:
 				continue
 
-			tags.append(six.ensure_str(value))
+			tags.append(ensure_str(value))
 		baseTimer.tags = tags
 
 	return True
@@ -293,11 +291,11 @@ def parseConfigOld(configuration, list, uniqueTimerId=0):
 		# Get name (V2+)
 		name = timer.get("name")
 		if name:
-			name = six.ensure_str(name)
+			name = ensure_str(name)
 		# Get name (= match) (V1)
 		else:
 			# Read out name
-			name = six.ensure_str(getValue(timer.findall("name"), ""))
+			name = ensure_str(getValue(timer.findall("name"), ""))
 
 		if not name:
 			print('[AutoTimer] Erroneous config is missing attribute "name", skipping entry')
@@ -307,7 +305,7 @@ def parseConfigOld(configuration, list, uniqueTimerId=0):
 		match = timer.get("match")
 		if match:
 			# Read out match
-			match = six.ensure_str(match)
+			match = ensure_str(match)
 			if not match:
 				print('[AutoTimer] Erroneous config contains empty attribute "match", skipping entry')
 				continue
@@ -468,7 +466,7 @@ def parseConfigOld(configuration, list, uniqueTimerId=0):
 				continue
 
 			if where in idx:
-				excludes[idx[where]].append(six.ensure_str(value))
+				excludes[idx[where]].append(ensure_str(value))
 
 		# Read out includes (use same idx) (V4+ feature, should not harm V3-)
 		includes = ([], [], [], [])
@@ -479,7 +477,7 @@ def parseConfigOld(configuration, list, uniqueTimerId=0):
 				continue
 
 			if where in idx:
-				includes[idx[where]].append(six.ensure_str(value))
+				includes[idx[where]].append(ensure_str(value))
 
 		# Read out max length (V4+)
 		maxlen = timer.get("maxduration")
@@ -496,7 +494,7 @@ def parseConfigOld(configuration, list, uniqueTimerId=0):
 				maxlen = None
 
 		# Read out recording path
-		destination = six.ensure_str(timer.get("destination", "")) or None
+		destination = ensure_str(timer.get("destination", "")) or None
 
 		# Read out recording tags
 		tags = []
@@ -505,7 +503,7 @@ def parseConfigOld(configuration, list, uniqueTimerId=0):
 			if not value:
 				continue
 
-			tags.append(six.ensure_str(value))
+			tags.append(ensure_str(value))
 
 		# Finally append timer
 		list.append(preferredAutoTimerComponent(

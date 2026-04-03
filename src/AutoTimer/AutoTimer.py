@@ -45,11 +45,7 @@ try:
 except ImportError:
 	renameTimer = None
 
-from . import config, itervalues
-
-from six.moves import range
-
-from six import PY2
+from . import config
 
 
 XML_CONFIG = "/etc/enigma2/autotimer.xml"
@@ -359,12 +355,15 @@ class AutoTimer:
 
 		# Workaround to allow search for umlauts if we know the encoding
 		match = removeBad(timer.match)
+		"""
 		if timer.encoding != 'UTF-8':
+			from six import PY2
 			try:
 				if PY2:
 					match = match.decode('UTF-8').encode(timer.encoding)  # FIXME PY3
 			except UnicodeDecodeError:
 				pass
+		"""
 
 		self.isIPTV = bool([service for service in timer.services if "%3a//" in service])
 
@@ -654,7 +653,7 @@ class AutoTimer:
 					continue
 
 				# We want to search for possible doubles
-				for rtimer in chain.from_iterable(itervalues(timerdict)):
+				for rtimer in chain.from_iterable(timerdict.values()):
 					if not rtimer.disabled:
 						if self.checkDoubleTimers(timer, name, rtimer.name, begin, rtimer.begin, end, rtimer.end, serviceref, str(rtimer.service_ref), enable_multiple_timer):
 							oldExists = True
