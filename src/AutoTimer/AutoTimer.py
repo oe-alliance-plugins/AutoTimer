@@ -38,7 +38,7 @@ from collections import defaultdict
 from difflib import SequenceMatcher
 from operator import itemgetter
 
-from Plugins.SystemPlugins.Toolkit.SimpleThread import SimpleThread
+from .SimpleThread import SimpleThread
 
 try:
 	from Plugins.Extensions.SeriesPlugin.plugin import renameTimer
