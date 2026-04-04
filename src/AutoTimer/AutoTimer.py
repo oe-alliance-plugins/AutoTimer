@@ -318,8 +318,7 @@ class AutoTimer:
 		# Iterate Timer
 		for timer in self.getEnabledTimerList():
 			# test only timer with specific id
-			if self.testid:
-				if self.testid != timer.id:
+			if self.testid and self.testid != timer.id:
 					continue
 			taskname = timer.name + '_%d' % self.timer_count
 			task = Components.Task.PythonTask(job, taskname)
