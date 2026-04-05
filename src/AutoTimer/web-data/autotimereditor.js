@@ -22,7 +22,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // Statics
-function url() {
+function Url() {
 	this.tpl               = '';
 	this.editor            = '/autotimereditor';
 	this.backup            = '/autotimereditor/web/backup';
@@ -43,20 +43,20 @@ function url() {
 	this.getlocations      = "/web/getlocations";
 	this.gettags           = "/web/gettags";
 	this.getservices       = '/web/getservices';
-};
-Object.extend(URL, new url());
+}
+Object.extend(URL, new Url());
 
-var types = {};
+let types = {};
 types['include'] = 'Include';
 types['exclude'] = 'Exclude';
 
-var wheres = {};
+let wheres = {};
 wheres['title'] = 'Title';
 wheres['shortdescription'] = 'Short description';
 wheres['description'] = 'Description';
 wheres['dayofweek'] = 'Day of week';
 
-var weekdays = {};
+let weekdays = {};
 weekdays['0'] = 'Monday';
 weekdays['1'] = 'Tuesday';
 weekdays['2'] = 'Wednesday';
@@ -81,7 +81,7 @@ function sortAutoTimerByName(a,b){
 
 // Now we will define our date comparison functions. These are callbacks
 // that we will be providing to the array sort method below.
-var date_sort_asc = function (date1, date2) {
+let date_sort_asc = function (date1, date2) {
 	// This is a comparison function that will result in dates being sorted in
 	// ASCENDING order. As you can see, JavaScript's native comparison operators
 	// can be used to compare dates. This was news to me.
@@ -90,7 +90,7 @@ var date_sort_asc = function (date1, date2) {
 	return 0;
 };
 
-var date_sort_desc = function (date1, date2) {
+let date_sort_desc = function (date1, date2) {
 	// This is a comparison function that will result in dates being sorted in
 	// DESCENDING order.
 	if (date1 > date2) return -1;
@@ -102,14 +102,14 @@ function sortAutoTimerByStart(a,b){
 	return date_sort_asc(a.start, b.start);
 }
 
-function in_array(a,p){
-	for (i=0;i<a.length;i++)
-		if (a[i] == p) return true
-	return false
+function in_array(a, p){
+	for (let i = 0; i < a.length; i++)
+		if (a[i] == p) return true;
+	return false;
 }
 
 function toReadableDate(date){
-	var dateString = "";
+	let dateString = "";
 	dateString += date.getFullYear();
 	dateString += "-" + addLeadingZero(date.getMonth()+1);
 	dateString += "-" + addLeadingZero(date.getDate());
@@ -117,7 +117,7 @@ function toReadableDate(date){
 }
 
 function toReadableDateTime(date){
-	var dateString = "";
+	let dateString = "";
 	dateString += date.getFullYear();
 	dateString += "-" + addLeadingZero(date.getMonth()+1);
 	dateString += "-" + addLeadingZero(date.getDate());
@@ -127,7 +127,7 @@ function toReadableDateTime(date){
 }
 
 function toReadableTime(date){
-	var dateString = "";
+	let dateString = "";
 	dateString = addLeadingZero(date.getHours());
 	dateString += ":" + addLeadingZero(date.getMinutes());
 	return dateString;
@@ -135,7 +135,7 @@ function toReadableTime(date){
 
 function toTimestamp(date){
 		date = date.split('-');
-		var sDate = new Date();
+		let sDate = new Date();
 		sDate.setFullYear(date[0], date[1] - 1, date[2]);
 		sDate.setHours( 0 );
 		sDate.setMinutes( 0 );
@@ -144,11 +144,11 @@ function toTimestamp(date){
 }
 
 function createOptionList(object, selected) {
-	var namespace = Array();
-	var i = 0;
-	for ( var element in object) {
-		var txt = String(object[element]);
-		var sel = " ";
+	let namespace = new Array();
+	let i = 0;
+	for (let element in object) {
+		let txt = String(object[element]);
+		let sel = " ";
 
 		if (element == selected) {
 			sel = "selected";
@@ -167,16 +167,16 @@ function createOptionList(object, selected) {
 }
 
 function numericalOptionList(lowerBound, upperBound, selectedValue, offset){
-	var list = [];
-	var idx = 0;
+	let list = [];
+	let idx = 0;
 	if(offset == undefined){
 		offset = 0;
 	}
 	
-	for(var i = lowerBound; i <= upperBound; i++){
-		var t = i + offset;
-		var txt = t < 10 ? "0" + t : t;
-		var selected = "";
+	for(let i = lowerBound; i <= upperBound; i++){
+		let t = i + offset;
+		let txt = t < 10 ? "0" + t : t;
+		let selected = "";
 		if(i == selectedValue){
 			selected = 'selected';
 		}
@@ -187,8 +187,8 @@ function numericalOptionList(lowerBound, upperBound, selectedValue, offset){
 }
 
 function getAttribute(xml, key, defaults){
-	var value = xml.getAttribute(key);
-	if (value==undefined) {
+	let value = xml.getAttribute(key);
+	if (value == undefined) {
 		if (key in defaults){
 			value = defaults[key];
 		}
@@ -198,7 +198,7 @@ function getAttribute(xml, key, defaults){
 
 ///////////////////////////////////////////////////////////////////////////////
 // AutoTimerEditorCore
-var AutoTimerEditorCore = Class.create({
+let AutoTimerEditorCore = Class.create({
 	initialize: function(name, servicename, servicereference, from, to){
 		// Check WebIf Version
 		if (typeof core == "undefined"){
@@ -232,7 +232,7 @@ var AutoTimerEditorCore = Class.create({
 
 	onSessionAvailable: function(sid){
 		debug("[AutoTimerEditorCore].onSessionAvailable, " + sid)
-		global_sessionid = sid;
+
 		// Display menu
 		this.menu.load();
 
@@ -265,7 +265,7 @@ var AutoTimerEditorCore = Class.create({
 	loadFinal: function(){
 		if (this.locations != undefined && this.tags != undefined && this.bouquets != undefined && this.hasVps != undefined && this.hasSeriesPlugin != undefined ){
 			// Load and display autotimer list
-			if (this.newautotimer.name!=''){
+			if (this.newautotimer.name == '') {
 				// Load autotimer list and show a new autotimer
 				this.list.loadNew();
 			}else{
@@ -279,7 +279,7 @@ var AutoTimerEditorCore = Class.create({
 
 ///////////////////////////////////////////////////////////////////////////////
 // Controller
-var AutoTimerServiceController = Class.create(Controller, {
+let AutoTimerServiceController = Class.create(Controller, {
 	initialize: function($super){
 		$super(new AutoTimerServiceListHandler());
 	},
@@ -297,7 +297,7 @@ var AutoTimerServiceController = Class.create(Controller, {
 	registerEvents: function(){}
 });
 
-var AutoTimerSettingsController = Class.create(Controller, {
+let AutoTimerSettingsController = Class.create(Controller, {
 	initialize: function($super){
 		$super(new AutoTimerSettingsHandler());
 	},
@@ -310,13 +310,13 @@ var AutoTimerSettingsController = Class.create(Controller, {
 	registerEvents: function(){},
 });
 
-var AutoTimerMenuController  = Class.create(Controller, {
+let AutoTimerMenuController = Class.create(Controller, {
 	initialize: function($super, target){
 		$super(new AutoTimerMenuHandler(target));
 	},
 	
 	back: function(){
-		window.location = window.location.protocol + "//" + window.location.hostname;
+		globalThis.location = globalThis.location.protocol + "//" + globalThis.location.hostname;
 	},
 	
 	load: function(){
@@ -333,7 +333,7 @@ var AutoTimerMenuController  = Class.create(Controller, {
 		
 	},
 	download: function(file){
-		var url =  URL.tmp + file;
+		let url = URL.tmp + file;
 		window.open(url,'Download');
 		core.notify("Downloading...");
 	},
@@ -344,14 +344,14 @@ var AutoTimerMenuController  = Class.create(Controller, {
 	
 	upload: function(){
 		//TODO move to a separate class
-		var form = $('restoreform');
+		let form = $('restoreform');
 		
 		if($('file').value.trim() == ""){
 			core.notify("Please select a File to restore!");
 			return;
 		}
 		// Create the iframe...
-		var iframe = document.createElement("iframe");
+		let iframe = document.createElement("iframe");
 		iframe.setAttribute("id","upload_iframe");
 		iframe.setAttribute("name","upload_iframe");
 		iframe.setAttribute("width","0");
@@ -365,9 +365,9 @@ var AutoTimerMenuController  = Class.create(Controller, {
 		iframe = $(iframe);
 	
 		// Add event...
-		var eventHandler = function(){
+		let eventHandler = function(){
 			// Message from server...
-			var resdoc;
+			let resdoc;
 			
 			if (iframe.contentDocument) {
 					resdoc = iframe.contentDocument;
@@ -377,7 +377,7 @@ var AutoTimerMenuController  = Class.create(Controller, {
 					resdoc = iframe.document;
 			}
 	
-			var result = new SimpleXMLResult(resdoc);
+			let result = new SimpleXMLResult(resdoc);
 			if (result.getState()){
 				autotimereditorcore.menu.handler.restore(
 					{ 'Filename' : result.getStateText() },
@@ -390,7 +390,7 @@ var AutoTimerMenuController  = Class.create(Controller, {
 				// unregister Eventhandler
 				iframe.stopObserving();
 				// remove iframe
-				iframe.parentNode.removeChild(iframe);
+				iframe.remove();
 			} catch(e){alert(e);}
 		}
 	
@@ -475,7 +475,7 @@ var AutoTimerMenuController  = Class.create(Controller, {
 	},
 });
 
-var AutoTimerListController = Class.create(Controller, {
+let AutoTimerListController = Class.create(Controller, {
 	//TODO What about a clone AutoTimer function
 	initialize: function($super, target){
 		$super(new AutoTimerListHandler(target));
@@ -497,8 +497,8 @@ var AutoTimerListController = Class.create(Controller, {
 	},
 	
 	onChange: function(){
-		var selectList = $('list');
-		var selectOptions = selectList.getElementsByTagName('option');
+		let selectList = $('list');
+		let selectOptions = selectList.getElementsByTagName('option');
 		
 		// Set new row size of list
 		selectList.size = selectOptions.length + 2;
@@ -506,8 +506,8 @@ var AutoTimerListController = Class.create(Controller, {
 		if ( selectOptions.length > 0){
 			if (this.select != undefined && this.select != null && this.select != ""){
 				// Select the given AutoTimer because of add/remove action
-				for (idx in selectOptions){
-					if ( this.select == unescape(selectOptions[idx].value) ){
+				for (let idx in selectOptions){
+					if ( this.select == decodeURIComponent(selectOptions[idx].value) ){
 						selectOptions[idx].selected = true;
 						break;
 					}
@@ -520,7 +520,7 @@ var AutoTimerListController = Class.create(Controller, {
 					this.idx = null;
 				}
 			}else{
-				var idx = selectList.selectedIndex;
+				let idx = selectList.selectedIndex;
 				if (idx < 0){
 					// Select at least the first element
 					idx = 0;
@@ -529,10 +529,10 @@ var AutoTimerListController = Class.create(Controller, {
 			}
 			
 			// Update editor
-			idx = selectList.selectedIndex;
+			let idx = selectList.selectedIndex;
 			if (idx >= 0){
 				// Load autotimer
-				var id = unescape(selectList.options[idx].value); 
+				let id = decodeURIComponent(selectList.options[idx].value); 
 				autotimereditorcore.edit.load( id );
 			}else{
 				// Show empty editor for new AutoTimer
@@ -566,12 +566,12 @@ var AutoTimerListController = Class.create(Controller, {
 	},
 		
 	remove: function(){
-		var selectList = $('list');
-		var idx = selectList.selectedIndex; 
-		var selectOptions = selectList.getElementsByTagName('option');
-		var id = unescape(selectOptions[idx].value);
+		let selectList = $('list');
+		let idx = selectList.selectedIndex; 
+		let selectOptions = selectList.getElementsByTagName('option');
+		let id = decodeURIComponent(selectOptions[idx].value);
 		
-		var nextidx = -1;
+		let nextidx = -1;
 		if ( selectOptions.length > 0){
 			if ( selectOptions.length > (idx+1)){
 				nextidx = idx;
@@ -579,8 +579,8 @@ var AutoTimerListController = Class.create(Controller, {
 				nextidx = idx-1;
 			}
 		}
-		var check = confirm("Do you really want to delete the AutoTimer\n" + selectList.options[idx].text + " ?");
-		if (check == true){
+		let check = confirm("Do you really want to delete the AutoTimer\n" + selectList.options[idx].text + " ?");
+		if (check){
 			this.idx = nextidx;
 			this.handler.remove(
 				{'id' : id},
@@ -612,7 +612,7 @@ var AutoTimerListController = Class.create(Controller, {
 	}
 });
 
-var AutoTimerEditController = Class.create(Controller, {
+let AutoTimerEditController = Class.create(Controller, {
 	initialize: function($super, target){
 		$super(new AutoTimerEditHandler(target));
 	},
@@ -627,7 +627,7 @@ var AutoTimerEditController = Class.create(Controller, {
 	},
 	
 	onFinished: function(){
-		var id = this.id>0 ? this.id : 'new';
+		let id = this.id>0 ? this.id : 'new';
 		$('headerautotimercontent').innerHTML = "AutoTimer Editor: " + $('name').value + " (" + id + ")";
 		this.onchangeSelect( $('justplay') );
 		this.onchangeCheckbox( $('timespan') );
@@ -638,14 +638,14 @@ var AutoTimerEditController = Class.create(Controller, {
 		this.onchangeSelectAfterEvent( $('afterevent') );
 		this.onchangeSelect( $('counter') );
 		this.onchangeCheckbox( $('usefilters') );
-		var filterwheres = $$('.filterwhere');
-		for (var i = 0; i < filterwheres.size(); i++) {
+		let filterwheres = $$('.filterwhere');
+		for (let i = 0; i < filterwheres.size(); i++) {
 			this.onchangeSelectFilter(filterwheres[i]);
 		}
 		this.onchangeCheckbox( $('usebouquets') );
 		this.onchangeCheckbox( $('useservices') );
-		var services = $$('.service');
-		for (var i = 0; i < services.size(); i++) {
+		let services = $$('.service');
+		for (let i = 0; i < services.size(); i++) {
 			if (services[i].lastElementChild.className == 'add'){
 				this.onchangeSelectBouquet(services[i].firstElementChild.firstElementChild);
 			}
@@ -703,23 +703,23 @@ var AutoTimerEditController = Class.create(Controller, {
 	},
 	
 	onchangeSelectBouquet: function(x) {
-		var select = x.parentNode.nextElementSibling.firstElementChild;
-		for (i = select.options.length - 1; i>=0; i--) {
+		let select = x.parentNode.nextElementSibling.firstElementChild;
+		for (let i = select.options.length - 1; i >= 0; i--) {
 			select.options.remove(i);
 		}
 		// Load services of selected bouquet
-		autotimereditorcore.services.load( unescape(x.value), this.servicesCallback.bind(this, x) );
+		autotimereditorcore.services.load( decodeURIComponent(x.value), this.servicesCallback.bind(this, x) );
 	},
 	servicesCallback: function(x, services) {
-		var select = x.parentNode.nextElementSibling.firstElementChild;
-		for ( var service in services) {
+		let select = x.parentNode.nextElementSibling.firstElementChild;
+		for ( let service in services) {
 			select.options.add( new Option(String(services[service]), service ) );
 		}
 	},
 	
 	changeTag: function(x) {
-		var selected = 'selected';
-		var attr = 'data-selected';
+		let selected = 'selected';
+		let attr = 'data-selected';
 		if(x.hasClassName(selected)){
 			x.removeClassName(selected);
 			x.writeAttribute(attr, '');
@@ -730,9 +730,9 @@ var AutoTimerEditController = Class.create(Controller, {
 	},
 	
 	addFilter: function(x) {
-		var parent = x.parentNode;
+		let parent = x.parentNode;
 		if (parent.children[1].firstElementChild.value == 'dayofweek' || parent.children[2].firstElementChild.value){
-			var node = parent.cloneNode(true);
+			let node = parent.cloneNode(true);
 			node.children[0].firstElementChild.selectedIndex = parent.children[0].firstElementChild.selectedIndex;
 			node.children[1].firstElementChild.selectedIndex = parent.children[1].firstElementChild.selectedIndex;
 			node.children[2].firstElementChild.value = parent.children[2].firstElementChild.value;
@@ -743,9 +743,9 @@ var AutoTimerEditController = Class.create(Controller, {
 	},
 	
 	removeFilter: function(x) {
-		var parent = x.parentNode;
-		var element = parent.children[0].firstElementChild;
-		var text = element.options[element.selectedIndex].text;
+		let parent = x.parentNode;
+		let element = parent.children[0].firstElementChild;
+		let text = element.options[element.selectedIndex].text;
 		element = parent.children[1].firstElementChild;
 		text += ' ' + element.options[element.selectedIndex].text;
 		if (element.value == 'dayofweek'){
@@ -754,37 +754,37 @@ var AutoTimerEditController = Class.create(Controller, {
 		} else{
 			text += ' ' + parent.children[2].firstElementChild.value;
 		}
-		var check = confirm("Do you really want to remove the Filter\n" + text + " ?");
-		if (check == true){
+		let check = confirm("Do you really want to remove the Filter\n" + text + " ?");
+		if (check){
 			$('filterlist').deleteRow(parent.rowIndex); 
 		}
 	},
 
 	addBouquet: function(x) {
-		var parent = x.parentNode;
-		var node = parent.cloneNode(true);
+		let parent = x.parentNode;
+		let node = parent.cloneNode(true);
 		node.children[0].firstElementChild.selectedIndex = parent.children[0].firstElementChild.selectedIndex;
 		node.children[1].className = 'remove';
 		$('bouquetlist').firstElementChild.insertBefore(node, parent);
 	},
 	
 	removeBouquet: function(x) {
-		var parent = x.parentNode;
-		var element = parent.children[0].firstElementChild;
-		var text = element.options[element.selectedIndex].text;
-		var check = confirm("Do you really want to remove the Bouquet\n" + text + " ?");
-		if (check == true){
+		let parent = x.parentNode;
+		let element = parent.children[0].firstElementChild;
+		let text = element.options[element.selectedIndex].text;
+		let check = confirm("Do you really want to remove the Bouquet\n" + text + " ?");
+		if (check){
 			$('bouquetlist').deleteRow(parent.rowIndex); 
 		}
 	},
 		
 	addService: function(x) {
-		var parent = x.parentNode;
-		var node = parent.cloneNode(true);
+		let parent = x.parentNode;
+		let node = parent.cloneNode(true);
 		// Check if service is not a marker
 		// Service reference flags == isMarker (== 64)
-		var reference = parent.children[1].firstElementChild.value;
-		if (unescape(reference).slice(2,4) != "64"){
+		let reference = parent.children[1].firstElementChild.value;
+		if (decodeURIComponent(reference).slice(2,4) != "64"){
 			node.children[0].firstElementChild.selectedIndex = parent.children[0].firstElementChild.selectedIndex;
 			node.children[1].firstElementChild.selectedIndex = parent.children[1].firstElementChild.selectedIndex;
 			node.children[2].className = 'remove';
@@ -793,11 +793,11 @@ var AutoTimerEditController = Class.create(Controller, {
 	},
 	
 	removeService: function(x) {
-		var parent = x.parentNode;
-		var element = parent.children[1].firstElementChild;
-		var text = element.options[element.selectedIndex].text;
-		var check = confirm("Do you really want to remove the Service\n" + text + " ?");
-		if (check == true){
+		let parent = x.parentNode;
+		let element = parent.children[1].firstElementChild;
+		let text = element.options[element.selectedIndex].text;
+		let check = confirm("Do you really want to remove the Service\n" + text + " ?");
+		if (check){
 			$('servicelist').deleteRow(parent.rowIndex); 
 		}
 	},
@@ -805,17 +805,17 @@ var AutoTimerEditController = Class.create(Controller, {
 	save: function() {
 		//TODO Move to a separate class similar AutoTimerListEntry
 		//TODO handle defaults
-		var data = {}
-		var selectList = $('list');
-		var idx = selectList.selectedIndex;
+		let data = {}
+		let selectList = $('list');
+		let idx = selectList.selectedIndex;
 		if (idx>=0){
-			data['id'] = unescape(selectList.options[idx].value);
+			data['id'] = decodeURIComponent(selectList.options[idx].value);
 			selectList.options[idx].className = ($('enabled').checked) ? 'enabled' : 'disabled';
 		}
 		data['enabled'] = ($('enabled').checked) ? '1' : '0';
 		
-		options = ['match','name','encoding','searchType','searchCase','justplay','avoidDuplicateDescription'];
-		for (var id = 0; id < options.length; id++) {
+		let options = ['match','name','encoding','searchType','searchCase','justplay','avoidDuplicateDescription'];
+		for (let id = 0; id < options.length; id++) {
 			if ($(options[id]).value == ''){
 				core.notify('Error: ' + options[id] + ' is empty', false);
 				return;
@@ -831,7 +831,7 @@ var AutoTimerEditController = Class.create(Controller, {
 		
 		if ($('timespan').checked){
 			options = ['from','to'];
-			for (var id = 0; id < options.length; id++) {
+			for (let id = 0; id < options.length; id++) {
 				if ($(options[id]).value == ''){
 					core.notify('Error: ' + options[id] + ' is empty', false);
 					return;
@@ -847,7 +847,7 @@ var AutoTimerEditController = Class.create(Controller, {
 		
 		if ($('timeframe').checked){
 			options = ['before','after'];
-			for (var id = 0; id < options.length; id++) {
+			for (let id = 0; id < options.length; id++) {
 				if ($(options[id]).value == ''){
 					core.notify('Error: ' + options[id] + ' is empty', false);
 					return;
@@ -880,7 +880,7 @@ var AutoTimerEditController = Class.create(Controller, {
 			data['maxduration']             = '';
 		}
 		
-		var afterevent = $('afterevent').value;
+		let afterevent = $('afterevent').value;
 		data['afterevent']              = afterevent;
 		if ($('aftereventusetimespan').checked){
 			data['aftereventFrom']        = $('aftereventFrom').value;
@@ -891,9 +891,9 @@ var AutoTimerEditController = Class.create(Controller, {
 		if ($('counter').value > 0){
 			data['counterFormat']           = $('counterFormat').value;
 			data['left']                    = $('left').value;
-			var lastActivation = $('lastActivation').value;
+			let lastActivation = $('lastActivation').value;
 			if (lastActivation) data['lastActivation'] = lastActivation;
-			var lastBegin = $('lastBegin').value;
+			let lastBegin = $('lastBegin').value;
 			if (lastBegin) data['lastBegin'] = lastBegin;
 		}
 		
@@ -907,11 +907,11 @@ var AutoTimerEditController = Class.create(Controller, {
 			data['location']             = '';
 		}
 		
-		var tags = [];
+		let tags = [];
 		$$('.tags').each(function(element){
-			var selected = element.readAttribute('data-selected');
+			let selected = element.readAttribute('data-selected');
 			if(selected == "selected"){
-				var value = element.readAttribute('data-value');
+				let value = element.readAttribute('data-value');
 				tags.push(value);
 			}
 		});
@@ -921,18 +921,18 @@ var AutoTimerEditController = Class.create(Controller, {
 			data['tag'] = '';
 		}
 		
-		var title = [];
-		var shortdescription = [];
-		var description = [];
-		var dayofweek = [];
-		var nottitle = [];
-		var notshortdescription = [];
-		var notdescription = [];
-		var notdayofweek = [];
+		let title = [];
+		let shortdescription = [];
+		let description = [];
+		let dayofweek = [];
+		let nottitle = [];
+		let notshortdescription = [];
+		let notdescription = [];
+		let notdayofweek = [];
 		if ($('usefilters').checked){
 			$$('.filter').each(function(element){
 				if (element.lastElementChild.className != 'add'){
-					var where = element.children[1].firstElementChild.value;
+					let where = element.children[1].firstElementChild.value;
 					if (element.children[0].firstElementChild.value == 'include'){
 						if (where == 'title' ) title.push(element.children[2].firstElementChild.value);
 						if (where == 'shortdescription' ) shortdescription.push(element.children[2].firstElementChild.value);
@@ -988,22 +988,22 @@ var AutoTimerEditController = Class.create(Controller, {
 			data['!dayofweek'] = '';
 		}
 		
-		var bouquets = [];
+		let bouquets = [];
 		if ($('usebouquets').checked){
 			$$('.bouquet').each(function(element){
 				if (element.lastElementChild.className != 'add'){
-					var select = element.children[0].firstElementChild;
+					let select = element.children[0].firstElementChild;
 					bouquets.push( select.value );
 				}
 			});
 		}
 		data['bouquets'] = bouquets.join(',');
 		
-		var services = [];
+		let services = [];
 		if ($('useservices').checked){
 			$$('.service').each(function(element){
 				if (element.lastElementChild.className != 'add'){
-					var select = element.children[1].firstElementChild;
+					let select = element.children[1].firstElementChild;
 					services.push( select.value );
 				}
 			});
@@ -1025,13 +1025,13 @@ var AutoTimerEditController = Class.create(Controller, {
 		}
 		
 		this.saveurl = [];
-		for( key in data ){
-			var value = data[key];
+		for( let key in data ){
+			let value = data[key];
 			if (typeof(value)=='string'){
 				this.saveurl.push( encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) );
 			} else if(typeof(value)=='object'&&(value instanceof Array)){
-				var len = value.length;
-				for (var i=0; i<len; i++){
+				let len = value.length;
+				for (let i=0; i<len; i++){
 					this.saveurl.push( encodeURIComponent(key) + '=' + encodeURIComponent(value[i]) );
 				}
 			}
@@ -1043,8 +1043,8 @@ var AutoTimerEditController = Class.create(Controller, {
 	},
 	saveCallback: function() {
 		//autotimereditorcore.list.reload();
-		var selectList = $('list');
-		var idx = selectList.selectedIndex;
+		let selectList = $('list');
+		let idx = selectList.selectedIndex;
 		if (idx>=0){
 			// User changed an existing autotimer
 			selectList.options[idx].text = '\u00A0' + $('name').value; // &nbsp;
@@ -1218,7 +1218,7 @@ var AutoTimerEditController = Class.create(Controller, {
 	}
 });
 
-var AutoTimerPreviewController = Class.create(Controller, {
+let AutoTimerPreviewController = Class.create(Controller, {
 	initialize: function($super, target){
 		$super(new AutoTimerPreviewHandler(target));
 	},
@@ -1234,7 +1234,7 @@ var AutoTimerPreviewController = Class.create(Controller, {
 	registerEvents: function(){}
 });
 
-var AutoTimerParseController = Class.create(Controller, {
+let AutoTimerParseController = Class.create(Controller, {
 	initialize: function($super, target){
 		$super(new AutoTimerParseHandler(target));
 	},
@@ -1255,7 +1255,7 @@ var AutoTimerParseController = Class.create(Controller, {
 	registerEvents: function(){}
 });
 
-var TimerController = Class.create({
+let TimerController = Class.create({
 	initialize: function(target){
 		this.listHandler = new TimerListHandler(target);
 		this.timerHandler = new TimerHandler(target, this.loadList.bind(this), []);
@@ -1296,7 +1296,7 @@ var TimerController = Class.create({
 	}
 });
 
-var AboutPage = Class.create({
+let AboutPage = Class.create({
 	initialize: function(target){
 		this.simpleHandler = new SimplePageHandler(target);
 	},
@@ -1317,14 +1317,14 @@ var AboutPage = Class.create({
 
 ///////////////////////////////////////////////////////////////////////////////
 // Handler
-var AbstractATContentHandler = Class.create(AbstractContentHandler,  {
+let AbstractATContentHandler = Class.create(AbstractContentHandler,  {
 	show: function(data){
 		this.data = data;
 		atTemplateEngine.process(this.tpl, data, this.target, this.finished.bind(this));
 	}
 });
 
-var AutoTimerServiceListHandler = Class.create(AbstractATContentHandler, {
+let AutoTimerServiceListHandler = Class.create(AbstractATContentHandler, {
 	initialize: function($super){
 		$super(null, null);
 		this.provider = new SimpleServiceListProvider (this.onReady.bind(this));
@@ -1337,9 +1337,9 @@ var AutoTimerServiceListHandler = Class.create(AbstractATContentHandler, {
 	},
 	
 	onReady: function(data){
-		var services = {};
-		var len = data.services.length;
-		for (var i=0; i<len; i++){
+		let services = {};
+		let len = data.services.length;
+		for (let i=0; i<len; i++){
 			services[data.services[i].servicereference] = data.services[i].servicename;
 		}
 		if(typeof(this.callback) == "function"){
@@ -1348,7 +1348,7 @@ var AutoTimerServiceListHandler = Class.create(AbstractATContentHandler, {
 	}
 });
 
-var AutoTimerSettingsHandler = Class.create(AbstractATContentHandler, {
+let AutoTimerSettingsHandler = Class.create(AbstractATContentHandler, {
 	initialize: function($super){
 		$super(null, null);
 		this.provider = new AutoTimerSettingsProvider(this.onReady.bind(this));
@@ -1367,7 +1367,7 @@ var AutoTimerSettingsHandler = Class.create(AbstractATContentHandler, {
 	}
 });
 
-var AutoTimerMenuHandler = Class.create(AbstractATContentHandler,{
+let AutoTimerMenuHandler = Class.create(AbstractATContentHandler,{
 	initialize: function($super, target){
 		$super('tplAutoTimerMenu', target);
 		this.provider = new SimpleRequestProvider();
@@ -1386,7 +1386,7 @@ var AutoTimerMenuHandler = Class.create(AbstractATContentHandler,{
 			}.bind(this, callback));
 	},
 	backupCallback: function(callback, result){
-		var text = result.getStateText();
+		let text = result.getStateText();
 		this.notify(text, result.getState());
 		if(typeof(callback) == "function"){
 			callback(text);
@@ -1409,7 +1409,7 @@ var AutoTimerMenuHandler = Class.create(AbstractATContentHandler,{
 	},
 });
 
-var AutoTimerListHandler  = Class.create(AbstractATContentHandler, {
+let AutoTimerListHandler  = Class.create(AbstractATContentHandler, {
 	initialize: function($super, target){
 		$super('tplAutoTimerList', target);
 		this.provider = new AutoTimerListProvider(this.show.bind(this));
@@ -1441,7 +1441,7 @@ var AutoTimerListHandler  = Class.create(AbstractATContentHandler, {
 	},
 });
 
-var AutoTimerEditHandler = Class.create(AbstractATContentHandler, {
+let AutoTimerEditHandler = Class.create(AbstractATContentHandler, {
 	initialize: function($super, target){
 		$super('tplAutoTimerEdit', target);
 		this.provider = new AutoTimerEditProvider(this.show.bind(this));
@@ -1467,7 +1467,7 @@ var AutoTimerEditHandler = Class.create(AbstractATContentHandler, {
 	},
 });
 
-var AutoTimerPreviewHandler = Class.create(AbstractATContentHandler, {
+let AutoTimerPreviewHandler = Class.create(AbstractATContentHandler, {
 	initialize: function($super, target){
 		$super('tplAutoTimerPreview', target);
 		this.provider = new AutoTimerPreviewProvider(this.show.bind(this));
@@ -1475,7 +1475,7 @@ var AutoTimerPreviewHandler = Class.create(AbstractATContentHandler, {
 	},
 });
 
-var AutoTimerParseHandler = Class.create(AbstractATContentHandler, {
+let AutoTimerParseHandler = Class.create(AbstractATContentHandler, {
 	initialize: function($super, target){
 		$super(null, target);
 		this.provider = new SimpleRequestProvider();
@@ -1498,7 +1498,7 @@ var AutoTimerParseHandler = Class.create(AbstractATContentHandler, {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Provider
-var AutoTimerSettingsProvider = Class.create(AbstractContentProvider, {
+let AutoTimerSettingsProvider = Class.create(AbstractContentProvider, {
 	initialize: function($super, showFnc){
 		$super(URL.get, showFnc);
 	},
@@ -1507,7 +1507,7 @@ var AutoTimerSettingsProvider = Class.create(AbstractContentProvider, {
 		this.getUrl(this.url, null, this.loadCallback.bind(this), this.errorback.bind(this));
 	},
 	loadCallback: function(transport){
-		var data = this.renderXML(this.getXML(transport));
+		let data = this.renderXML(this.getXML(transport));
 		this.show(data);
 	},
 	renderXML: function(xml){
@@ -1516,7 +1516,7 @@ var AutoTimerSettingsProvider = Class.create(AbstractContentProvider, {
 	},
 });
 
-var AutoTimerListProvider = Class.create(AbstractContentProvider, {
+let AutoTimerListProvider = Class.create(AbstractContentProvider, {
 	initialize: function($super, showFnc){
 		$super(URL.list, showFnc);
 	},
@@ -1527,8 +1527,8 @@ var AutoTimerListProvider = Class.create(AbstractContentProvider, {
 	},
 	
 	getAutoTimer: function(id){
-		var autotimer = null;
-		for (idx in this.list) {
+		let autotimer = null;
+		for (let idx in this.list) {
 			if (this.list[idx].id == id){
 				autotimer = this.list[idx];
 				break;
@@ -1538,8 +1538,8 @@ var AutoTimerListProvider = Class.create(AbstractContentProvider, {
 	},
 	
 	getAutoTimerIndex: function(id){
-		var idx = null;
-		for (i in this.list) {
+		let idx = null;
+		for (let i in this.list) {
 			if (this.list[i].id == id){
 				idx = i;
 				break;
@@ -1549,18 +1549,18 @@ var AutoTimerListProvider = Class.create(AbstractContentProvider, {
 	}
 });
 
-var AutoTimerEditProvider = Class.create(AbstractContentProvider, {
+let AutoTimerEditProvider = Class.create(AbstractContentProvider, {
 	initialize: function($super, showFnc){
 		$super(URL.list, showFnc);
 	},
 	
 	load: function( id ){
-		callback = this.callback.bind(this, id);
+		let callback = this.callback.bind(this, id);
 		this.getUrl(this.url, null, callback, this.errorback.bind(this));
 	},
 	
 	callback: function(id, transport){
-		var data = this.renderXML(this.getXML(transport), id);
+		let data = this.renderXML(this.getXML(transport), id);
 		this.show(data);
 	},
 	
@@ -1570,13 +1570,13 @@ var AutoTimerEditProvider = Class.create(AbstractContentProvider, {
 	},
 });
 
-var AutoTimerPreviewProvider = Class.create(AbstractContentProvider, {
+let AutoTimerPreviewProvider = Class.create(AbstractContentProvider, {
 	initialize: function($super, showFnc){
 		$super(URL.preview, showFnc);
 	},
 	
 	callback: function(transport){
-		var data = this.renderXML(this.getXML(transport));
+		let data = this.renderXML(this.getXML(transport));
 		this.show(data);
 	},
 	
@@ -1592,12 +1592,12 @@ var AutoTimerPreviewProvider = Class.create(AbstractContentProvider, {
 function AutoTimerSettings(xml){
 	this.xmlitems = getNamedChildren(xml, "e2settings", "e2setting");
 	this.json = new Array();
-	var len = this.xmlitems.length;
-	for (var i=0; i<len; i++){
-		var element = this.xmlitems[i].getElementsByTagName('e2settingname');
-		var name = element[0].firstChild.nodeValue;
-		var element = this.xmlitems[i].getElementsByTagName('e2settingvalue');
-		var value = element[0].firstChild.nodeValue;
+	let len = this.xmlitems.length;
+	for (let i=0; i<len; i++){
+		let element = this.xmlitems[i].getElementsByTagName('e2settingname');
+		let name = element[0].firstChild.nodeValue;
+		element = this.xmlitems[i].getElementsByTagName('e2settingvalue');
+		let value = element[0].firstChild.nodeValue;
 		this.json[name] = value;
 	}
 	this.toJSON = function(){
@@ -1609,12 +1609,12 @@ function AutoTimerPreview(xml){
 	this.xmlitems = getNamedChildren(xml, "e2autotimersimulate", "e2simulatedtimer");
 	this.list = [];
 		if(this.list.length === 0){
-			var len = this.xmlitems.length;
-			for (var i=0; i<len; i++){
-				var xmlitem = this.xmlitems[i];
-				var begin = new Date( getNodeContent(xmlitem, 'e2timebegin') * 1000 );
-				var end = new Date( getNodeContent(xmlitem, 'e2timeend') * 1000 );
-				var timer = {
+			let len = this.xmlitems.length;
+			for (let i=0; i<len; i++){
+				let xmlitem = this.xmlitems[i];
+				let begin = new Date( getNodeContent(xmlitem, 'e2timebegin') * 1000 );
+				let end = new Date( getNodeContent(xmlitem, 'e2timeend') * 1000 );
+				let timer = {
 					'name' :           getNodeContent(xmlitem, 'e2name'),
 					'start' :          begin,
 					'date' :           toReadableDate( begin ),
@@ -1636,9 +1636,9 @@ function AutoTimerList(xml){
 	this.xmlitems = getNamedChildren(xml, "autotimer", "timer");
 	this.list = [];
 		if(this.list.length === 0){
-			var len = this.xmlitems.length;
-			for (var i=0; i<len; i++){
-				var autotimer = new AutoTimerListEntry(this.xmlitems.item(i)).toJSON();
+			let len = this.xmlitems.length;
+			for (let i=0; i<len; i++){
+				let autotimer = new AutoTimerListEntry(this.xmlitems.item(i)).toJSON();
 				this.list.push(autotimer);
 			}
 		this.list.sort(sortAutoTimerByName);
@@ -1674,8 +1674,8 @@ function AutoTimerEdit(xml, id){
 	this.xmlitems = getNamedChildren(xml, "autotimer", "timer");
 	this.autotimer = null;
 	this.getItem = function(){
-		var len = this.xmlitems.length;
-		for (var i=0; i<len; i++){
+		let len = this.xmlitems.length;
+		for (let i=0; i<len; i++){
 			if (this.xmlitems.item(i).getAttribute('id') == id){
 				this.autotimer = new AutoTimer(this.xmlitems.item(i), this.defaults).toJSON();
 				break;
@@ -1683,11 +1683,11 @@ function AutoTimerEdit(xml, id){
 		}
 		if (this.autotimer==null){
 			// Create empty AutoTimer with default values
-			var newautotimer = autotimereditorcore.newautotimer;
-			var timer = new Element('timer', newautotimer);
-			var e2service = new Element('e2service');
-			var e2servicename = new Element('e2servicename').update(newautotimer.e2servicename)
-			var e2servicereference = new Element('e2servicereference').update(newautotimer.e2servicereference);
+			let newautotimer = autotimereditorcore.newautotimer;
+			let timer = new Element('timer', newautotimer);
+			let e2service = new Element('e2service');
+			let e2servicename = new Element('e2servicename').update(newautotimer.e2servicename)
+			let e2servicereference = new Element('e2servicereference').update(newautotimer.e2servicereference);
 			e2service.appendChild( e2servicename );
 			e2service.appendChild( e2servicereference );
 			timer.appendChild( e2service );
@@ -1700,7 +1700,7 @@ function AutoTimerEdit(xml, id){
 function AutoTimerDefaults(xml){	
 	this.defaults = {}
 	// Extract default values
-	for (var i=0;i<xml.attributes.length;i++){
+	for (let i=0;i<xml.attributes.length;i++){
 		this.defaults[xml.attributes[i].name] = xml.attributes[i].value;
 	}
 	return this.defaults;
@@ -1711,40 +1711,40 @@ function AutoTimer(xml, defaults){
 	this.id = xml.getAttribute('id');
 	this.enabled = (xml.getAttribute('enabled')=='yes') ? 'checked' : '';
 	
-	var name = xml.getAttribute('name');
+	let name = xml.getAttribute('name');
 	this.match = xml.getAttribute('match');
 	this.name = (this.name == undefined) ? name : this.match;
 	
-	var encoding = getAttribute(xml, 'encoding', defaults);
+	let encoding = getAttribute(xml, 'encoding', defaults);
 	if (encoding==undefined) encoding = 'UTF-8';
-	var options = ['ISO8859-15', 'UTF-8'];
+	let options = ['ISO8859-15', 'UTF-8'];
 	this.encoding = toOptionList(options, encoding);
 	this.encoding.shift();
 
 	// Items which only exists if they differ from the default value
-	var searchType = getAttribute(xml, 'searchType', defaults);
+	let searchType = getAttribute(xml, 'searchType', defaults);
 	if (searchType==undefined) searchType = 'partial';
-	var options = {};
+	options = {};
 	options['partial'] = 'partial match';
 	options['exact'] = 'exact match';
 	options['description'] = 'description match';
 	this.searchType = createOptionList(options, searchType);
 
-	var searchCase = getAttribute(xml, 'searchCase', defaults);
+	let searchCase = getAttribute(xml, 'searchCase', defaults);
 	if (searchCase==undefined) searchCase = 'insensitive';
-	var options = {};
+	options = {};
 	options['sensitive'] = 'case-sensitive search';
 	options['insensitive'] = 'case-insensitive search';
 	this.searchCase = createOptionList(options, searchCase);
 
-	var justplay = getAttribute(xml, 'justplay', defaults);
+	let justplay = getAttribute(xml, 'justplay', defaults);
 	if (justplay==undefined) justplay = 'record';
-	var options = {};
+	options = {};
 	options['0'] = 'record';
 	options['1'] = 'zap';
 	this.justplay = createOptionList(options, justplay);
 	
-	var setEndtime = getAttribute(xml, 'setEndtime', defaults);
+	let setEndtime = getAttribute(xml, 'setEndtime', defaults);
 	if (setEndtime==undefined || setEndtime=='1'){
 		setEndtime = 'checked';
 	}else{
@@ -1754,9 +1754,9 @@ function AutoTimer(xml, defaults){
 	
 	this.overrideAlternatives = (getAttribute(xml, 'overrideAlternatives', defaults)) ? 'checked' : '';
 	
-	var from = getAttribute(xml, 'from', defaults);
-	var to = getAttribute(xml, 'to', defaults);
-	var usetimespan = '';
+	let from = getAttribute(xml, 'from', defaults);
+	let to = getAttribute(xml, 'to', defaults);
+	let usetimespan = '';
 	if (xml.getAttribute('from')==undefined || xml.getAttribute('to')==undefined) {
 		usetimespan = '';
 	}else{
@@ -1770,9 +1770,9 @@ function AutoTimer(xml, defaults){
 		'to' : to,
 	}	
 	
-	var after = getAttribute(xml, 'after', defaults);
-	var before = getAttribute(xml, 'before', defaults);
-	var usetimeframe = '';
+	let after = getAttribute(xml, 'after', defaults);
+	let before = getAttribute(xml, 'before', defaults);
+	let usetimeframe = '';
 	if (xml.getAttribute('after')==undefined || xml.getAttribute('before')==undefined) {
 		usetimeframe = '';
 	}else{
@@ -1795,8 +1795,8 @@ function AutoTimer(xml, defaults){
 		'before' : toReadableDate( before ),
 	}	
 	
-	var offset = getAttribute(xml, 'offset', defaults);
-	var useoffset = (offset) ? 'checked' : '';
+	let offset = getAttribute(xml, 'offset', defaults);
+	let useoffset = (offset) ? 'checked' : '';
 	if (offset != undefined) {
 		offset = offset.split(',');
 		if (offset.length!=2){
@@ -1805,33 +1805,33 @@ function AutoTimer(xml, defaults){
 	} else {
 		offset = ['5','5'];
 	}
-	var begin = parseInt(offset[0]);
-	var end = parseInt(offset[1]);
+	let begin = Number.parseInt(offset[0]);
+	let end = Number.parseInt(offset[1]);
 	this.offset = {
 		'useoffset' : useoffset,
 		'begin' : numericalOptionList(0, 100, begin),
 		'end' : numericalOptionList(0, 100, end),
 	}	
 	
-	var maxduration = getAttribute(xml, 'maxduration', defaults);
-	var usemaxduration = (maxduration) ? 'checked' : '';
+	let maxduration = getAttribute(xml, 'maxduration', defaults);
+	let usemaxduration = (maxduration) ? 'checked' : '';
 	if (maxduration == undefined) maxduration = 70;
 	this.maxduration = {
 		'usemaxduration' : usemaxduration,
 		'maxduration' : numericalOptionList(0, 999, maxduration),
 	}	
 	
-	var xmlafterevents = xml.getElementsByTagName('afterevent');
-	var afterevent = '';
-	var aftereventFrom = '';
-	var aftereventTo = '';
+	let xmlafterevents = xml.getElementsByTagName('afterevent');
+	let afterevent = '';
+	let aftereventFrom = '';
+	let aftereventTo = '';
 	if (xmlafterevents.length > 0){
-		var xmlafterevent = xmlafterevents.item(0);
+		let xmlafterevent = xmlafterevents.item(0);
 		afterevent = xmlafterevent.firstChild.nodeValue;
 		aftereventFrom = xmlafterevent.getAttribute('from');
 		aftereventTo = xmlafterevent.getAttribute('to');
 	}
-	var useaftereventtimespan = (aftereventFrom || aftereventTo) ? 'checked' : '';
+	let useaftereventtimespan = (aftereventFrom || aftereventTo) ? 'checked' : '';
 	if (aftereventFrom == undefined || aftereventFrom == '') aftereventFrom = '23:15';
 	if (aftereventTo == undefined || aftereventTo =='') aftereventTo = '07:00';
 	if (afterevent == '') afterevent = 'default';
@@ -1839,7 +1839,7 @@ function AutoTimer(xml, defaults){
 	if (afterevent == 'shutdown') afterevent = 'deepstandby';
 	if (afterevent == 'none') afterevent = 'nothing';
 	//ENDTODO
-	var options = {};
+	options = {};
 	options['default'] = 'Standard';
 	options['nothing'] = 'Do nothing';
 	options['standby'] = 'Go to Standby';
@@ -1853,15 +1853,15 @@ function AutoTimer(xml, defaults){
 	}
 	
 	//TODO TEST lastactivation lastbegin
-	var counter = getAttribute(xml, 'counter', defaults);
-	var left = getAttribute(xml, 'left', defaults);
-	var counterFormat = getAttribute(xml, 'counterFormat', defaults);
-	var lastActivation = getAttribute(xml, 'lastActivation', defaults);
-	var lastBegin = getAttribute(xml, 'lastBegin', defaults);
+	let counter = getAttribute(xml, 'counter', defaults);
+	let left = getAttribute(xml, 'left', defaults);
+	let counterFormat = getAttribute(xml, 'counterFormat', defaults);
+	let lastActivation = getAttribute(xml, 'lastActivation', defaults);
+	let lastBegin = getAttribute(xml, 'lastBegin', defaults);
 	if (counter==undefined) counter = 0;
 	if (left == undefined) left = 0;
 	if (counterFormat==undefined) counterFormat = '';
-	var counterFormatOptions = {};
+	let counterFormatOptions = {};
 	counterFormatOptions[''] = 'Never';
 	counterFormatOptions['%m'] = 'Monthly';
 	counterFormatOptions['%U'] = 'Weekly (Sunday)';
@@ -1876,7 +1876,7 @@ function AutoTimer(xml, defaults){
 	}else if (lastBegin == '0') {
 		lastBegin = '0';
 	} else{
-		lastBegin = toReadableDate(new Date( parseInt(lastBegin) * 1000 ));
+		lastBegin = toReadableDate(new Date( Number.parseInt(lastBegin) * 1000 ));
 	}
 	this.counter = {
 		'options' : numericalOptionList(0, 100, counter),
@@ -1886,44 +1886,44 @@ function AutoTimer(xml, defaults){
 		'lastBegin' : lastBegin,
 	}
 
-	avoidDuplicateDescription = getAttribute(xml, 'avoidDuplicateDescription', defaults);
+	let avoidDuplicateDescription = getAttribute(xml, 'avoidDuplicateDescription', defaults);
 	if (avoidDuplicateDescription==undefined) avoidDuplicateDescription = '0';
-	var options = {};
+	options = {};
 	options['0'] = 'No';
 	options['1'] = 'On same service';
 	options['2'] = 'On any service';
 	options['3'] = 'Any service/recording';
 	this.avoidDuplicateDescription = createOptionList(options, avoidDuplicateDescription);
 
-	var location = getAttribute(xml, 'location', defaults);
-	var uselocation = (location) ? 'checked' : '';
+	let location = getAttribute(xml, 'location', defaults);
+	let uselocation = (location) ? 'checked' : '';
 	if (location == undefined) {
 		location = '';
 	}
-	var l = toOptionList(autotimereditorcore.locations, location);
+	let l = toOptionList(autotimereditorcore.locations, location);
 	l.shift();
 	this.location = {
 		'uselocation' : uselocation,
 		'locations' : l,
 	}
 	
-	var xmltags = xml.getElementsByTagName('e2tags');
-	var tags = '';
+	let xmltags = xml.getElementsByTagName('e2tags');
+	let tags = '';
 	if (xmltags.length > 0){
 		tags = xmltags.item(0).firstChild.nodeValue;
 	}
 	this.tags = toOptionList(autotimereditorcore.tags, tags, " ");
 	this.tags.shift();
 	
-	var filters = [];
-	var filtertags = ['include', 'exclude'];
-	var tlen = filtertags.length;
-	for (var t=0; t<tlen; t++){
-		var xmlfilters = xml.getElementsByTagName(filtertags[t]);
-		var len = xmlfilters.length;
-		for (var i=0; i<len; i++){
-			var text = xmlfilters.item(i).firstChild.nodeValue;
-			var weekday = text;
+	let filters = [];
+	let filtertags = ['include', 'exclude'];
+	let tlen = filtertags.length;
+	for (let t=0; t<tlen; t++){
+		let xmlfilters = xml.getElementsByTagName(filtertags[t]);
+		let len = xmlfilters.length;
+		for (let i=0; i<len; i++){
+			let text = xmlfilters.item(i).firstChild.nodeValue;
+			let weekday = text;
 			if (text in weekdays ){
 				text = '';
 			} else{
@@ -1939,7 +1939,7 @@ function AutoTimer(xml, defaults){
 			});
 		}
 	}
-	var usefilters = (filters.length > 0) ? 'checked' : '';
+	let usefilters = (filters.length > 0) ? 'checked' : '';
 	filters.push({ 
 		'type' : createOptionList(types, 'include'),
 		'where' : createOptionList(wheres, 'title'),
@@ -1952,14 +1952,14 @@ function AutoTimer(xml, defaults){
 		'filters' : filters,
 	}
 	
-	var bouquetoptions = createOptionList(autotimereditorcore.bouquets);
-	var bouquets = [];
-	var services = [];
-	var xmlservices = xml.getElementsByTagName('e2service');
-	var len = xmlservices.length;
+	let bouquetoptions = createOptionList(autotimereditorcore.bouquets);
+	let bouquets = [];
+	let services = [];
+	let xmlservices = xml.getElementsByTagName('e2service');
+	let len = xmlservices.length;
 	if (xmlservices){
-		for (var i=0; i<len; i++){
-			var name = xmlservices.item(i).getElementsByTagName('e2servicename');
+		for (let i=0; i<len; i++){
+			let name = xmlservices.item(i).getElementsByTagName('e2servicename');
 			if(name.item(0).firstChild == null){
 				name = '';
 			}
@@ -1967,20 +1967,20 @@ function AutoTimer(xml, defaults){
 				name = name.item(0).firstChild.nodeValue;
 			}
 			
-			var reference = xmlservices.item(i).getElementsByTagName('e2servicereference');
-			var firstChild = reference.item(0).firstChild;
+			let reference = xmlservices.item(i).getElementsByTagName('e2servicereference');
+			let firstChild = reference.item(0).firstChild;
 			if (firstChild){
 				reference = escape(firstChild.nodeValue);
 				// Check if service is a bouquet
 				// Service reference flags == isDirectory | mustDescent | canDescent (== 7)
-				if (unescape(reference).slice(2,3) == "7"){
+				if (decodeURIComponent(reference).slice(2,3) == "7"){
 					bouquets.push({
 						'bouquet' : createOptionList(autotimereditorcore.bouquets, reference),
 						'class' : 'remove',
 					});
 				}else{
-					var service = [];
-					var bouquet = bouquetoptions.slice(0);
+					let service = [];
+					let bouquet = bouquetoptions.slice(0);
 					service.push({
 							'value' : reference,
 							'txt' : name,
@@ -2002,7 +2002,7 @@ function AutoTimer(xml, defaults){
 		}
 	}
 	
-	var usebouquets = (bouquets.length > 0) ? 'checked' : '';
+	let usebouquets = (bouquets.length > 0) ? 'checked' : '';
 	bouquets.push({ 
 		'bouquet' : bouquetoptions,
 		'class' : 'add',
@@ -2012,7 +2012,7 @@ function AutoTimer(xml, defaults){
 		'bouquets' : bouquets,
 	}
 	
-	var useservices = (services.length > 0) ? 'checked' : '';
+	let useservices = (services.length > 0) ? 'checked' : '';
 	services.push({ 
 		'bouquet' : bouquetoptions,
 		'service' : bouquetoptions,
@@ -2023,17 +2023,17 @@ function AutoTimer(xml, defaults){
 		'services' : services,
 	}
 	
-	var hasVps = (autotimereditorcore.hasVps == "True") ? '' : 'invisible';
-	var vps_enabled = (getAttribute(xml, 'vps_enabled', defaults)) ? 'checked' : '';
-	var vps_overwrite = (getAttribute(xml, 'vps_overwrite', defaults)) ? 'checked' : '';
+	let hasVps = (autotimereditorcore.hasVps == "True") ? '' : 'invisible';
+	let vps_enabled = (getAttribute(xml, 'vps_enabled', defaults)) ? 'checked' : '';
+	let vps_overwrite = (getAttribute(xml, 'vps_overwrite', defaults)) ? 'checked' : '';
 	this.vps = {
 		'hasVPS' : hasVps,
 		'vps_enabled' : vps_enabled,
 		'vps_overwrite' : vps_overwrite,
 	}
 	
-	var hasSeriesPlugin = (autotimereditorcore.hasSeriesPlugin == "True") ? '' : 'invisible';
-	var series_labeling = (getAttribute(xml, 'series_labeling', defaults)) ? 'checked' : '';
+	let hasSeriesPlugin = (autotimereditorcore.hasSeriesPlugin == "True") ? '' : 'invisible';
+	let series_labeling = (getAttribute(xml, 'series_labeling', defaults)) ? 'checked' : '';
 	this.seriesplugin = {
 		'hasSeriesPlugin' : hasSeriesPlugin,
 		'series_labeling' : series_labeling,

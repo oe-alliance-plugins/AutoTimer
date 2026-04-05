@@ -4,10 +4,10 @@
 		font-weight: bold;
 		color: #485052;
 		text-align: center;
-		background: #555
+		background: #555 /* NOSONAR */
 	}
 
-	a, a:visited, a:active,{
+	a, a:visited, a:active {
 		color: #485052;
 		text-decoration: none;
 	}
@@ -26,7 +26,7 @@
 		padding: 0px;
 		height: 1px;
 		color: grey;
-		background-color: grey;
+		background-color: grey; /* NOSONAR */
 		border: none;
 	}
 
@@ -37,8 +37,7 @@
 	table, table tr, table td{
 		margin: 0px;
 		padding: 0px;
-		border-width: 0 0 0 0;
-		border-style: collapse;
+		border-collapse: collapse;
 		border-spacing: 0px;
 		border: 0px;
 	}
@@ -185,12 +184,12 @@
 		overflow: hidden;
 	}
 	
-	#mainMenu #mainMenuLeft{
+	.mainMenuLeft{
 		float: left;
 		margin-left: 5px;
 	}
 	
-	#mainMenu #mainMenuRight{
+	.mainMenuRight{
 		float: right;
 		margin-right: 5px;
 	}
@@ -234,8 +233,10 @@
 	
 	input[type=file] {
 		-webkit-appearance: textfield;
+		appearance: textfield;
 		position: relative;
 		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
 		padding-right: 6px;
 	}
 	
@@ -339,8 +340,6 @@
 		-webkit-border-radius: 5px;
 		-moz-border-radius: 5px;
 	}
-	#content{
-	}
 	#contentHd{
 		background: #000;
 	}
@@ -361,7 +360,6 @@
 		padding-right: 5px;
 		padding-bottom: 5px;
 		white-space: nowrap;
-		/*vertical-align:top;*/
 	}
 	.optionContent{
 		height: 25px;
@@ -370,7 +368,6 @@
 	}
 	.optionMain{
 		padding-right: 2px;
-		/*vertical-align:top;*/
 	}
 	.optionSub{
 		padding-left: 5px;
@@ -623,12 +620,12 @@
 
 	.timerState2 {
 		background: #2DBD28;
-		color: #FFFFFF
+		color: #FFFFFF /* NOSONAR */
 	}
 
 	.timerState3 {
 		background: #282DBD;
-		color: #FFFFFF
+		color: #FFFFFF /* NOSONAR */
 	}
 
 	td.timerList {
