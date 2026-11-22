@@ -366,8 +366,13 @@ class AutoTimer:
 
 		self.isIPTV = bool([service for service in timer.services if "%3a//" in service])
 
+		# A match title of "*" matches every event (whatever the search type is): the events of the services of the timer are
+		# listed like for a description search, and the other filters (services, timespan, weekdays, ...) decide below.
+		# Limit the services (or bouquets) of such a timer: without them the events of all bouquets are looked at.
+		wildcard = match.strip() == "*"
+
 		# As well as description, also allow timers on individual IPTV streams
-		if timer.searchType == "description" or self.isIPTV:
+		if timer.searchType == "description" or self.isIPTV or wildcard:
 			epgmatches = []
 
 			casesensitive = timer.searchCase == "sensitive"
@@ -431,7 +436,9 @@ class AutoTimer:
 
 				# Filter events
 				for serviceref, eit, name, begin, duration, shortdesc, extdesc in allevents:
-					if timer.searchType == "description":
+					if wildcard:
+						epgmatches.append((serviceref, eit, name, begin, duration, shortdesc, extdesc))
+					elif timer.searchType == "description":
 						if match in (shortdesc if casesensitive else shortdesc.lower()) or match in (extdesc if casesensitive else extdesc.lower()):
 							epgmatches.append((serviceref, eit, name, begin, duration, shortdesc, extdesc))
 					else:  # IPTV streams (if not "description" search)
